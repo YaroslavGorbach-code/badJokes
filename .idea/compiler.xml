@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.7">
-      <module name="badJokes.app" target="11" />
-      <module name="badJokes.base" target="11" />
-      <module name="badJokes.common-ui" target="11" />
-      <module name="badJokes.core-data" target="11" />
+    <bytecodeTargetLevel target="11">
       <module name="badJokes.feature-jokes" target="11" />
       <module name="badJokes.jokes-data" target="11" />
     </bytecodeTargetLevel>

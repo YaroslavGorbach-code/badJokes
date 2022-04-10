@@ -10,7 +10,4 @@ rootProject.name = "badJokes"
 include ':app'
 include ':base'
 include ':common-ui'
-include ':jokes-data'
-include ':jokes-domain'
-include ':feature-jokes'
 include ':core-data'
