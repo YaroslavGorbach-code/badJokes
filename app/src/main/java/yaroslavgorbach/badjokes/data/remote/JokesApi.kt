@@ -11,7 +11,7 @@ import yaroslavgorbach.cbadJoke.core.data.retrofit
 interface JokesService {
     @GET("joke/Any")
     suspend fun jokes(
-        @Query("amount") amount: Int? = 5
+        @Query("amount") amount: Int? = 10
     ): JokeResponse
 }
 

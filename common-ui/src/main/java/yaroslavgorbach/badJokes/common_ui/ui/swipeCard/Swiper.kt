@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 enum class SwipedOutDirection {
     LEFT, RIGHT
@@ -23,8 +25,9 @@ inline fun <reified T> Swiper(
     onEmpty: () -> Unit = {},
     controller: SwipeController = rememberSwipeController(),
     stackCount: Int = items.size,
-    paddingBetweenCards: Float = 40f,
+    paddingBetweenCards: Float = 24f,
     modifier: Modifier = Modifier,
+    cardElevation: Dp = 10.dp,
     crossinline renderItem: @Composable (T) -> Unit
 ) {
     Box(modifier = modifier) {
@@ -35,9 +38,11 @@ inline fun <reified T> Swiper(
                 if (index == list.lastIndex) {
                     controller.currentCardController = cardController
                 }
-                if (!cardController.isCardOut()) {
+
+                if (cardController.isCardOut().not()) {
                     val paddingTop by animateFloatAsState(targetValue = (index * paddingBetweenCards))
                     Card(
+                        elevation = cardElevation,
                         modifier = Modifier
                             .pointerInput(Unit) {
                                 detectDragGestures(
@@ -55,7 +60,7 @@ inline fun <reified T> Swiper(
                             }
                             .graphicsLayer(
                                 translationX = cardController.cardX,
-                                translationY = cardController.cardY + paddingTop,
+                                translationY = cardController.cardY - paddingTop,
                                 rotationZ = cardController.rotation,
                             )
                     ) {

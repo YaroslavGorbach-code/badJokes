@@ -39,8 +39,8 @@ fun BadJokesTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        color = if (isDarkTheme) DarkColorPalette.background else LightColorPalette.background,
-        darkIcons = isDarkTheme.not()
+        color = Primary,
+        darkIcons = false
     )
 
     MaterialTheme(

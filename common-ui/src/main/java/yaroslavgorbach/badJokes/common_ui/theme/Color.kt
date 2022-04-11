@@ -2,7 +2,7 @@ package yaroslavgorbach.badJokes.common_ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Primary = Color(0xFFFFC700)
+val Primary = Color(0xFF00B0FF)
 val Secondary = Color(0xFFFF2E00)
 val Error = Color(0xFFFF2E00)
 

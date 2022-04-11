@@ -1,5 +1,7 @@
 package yaroslavgorbach.badjokes.feature.jokes.model
 
-sealed class JokesAction {
+import yaroslavgorbach.badjokes.data.local.model.JokeEntity
 
+sealed class JokesAction {
+    class RemoveJoke(val joke: JokeEntity) : JokesAction()
 }

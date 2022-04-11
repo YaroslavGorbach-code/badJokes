@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">badJokes</string>
+    <string name="app_name">Bad jokes</string>
+    <string name="loading_error_message">Loading failed</string>
 </resources>
