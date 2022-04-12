@@ -1,6 +1,5 @@
 package yaroslavgorbach.badjokes.feature.jokes.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,17 +58,23 @@ class JokesViewModel @Inject constructor(
                             loadJokes(5)
                         }
                     }
+                    is JokesAction.LoadJokes -> {
+                        loadJokes(5)
+                    }
                 }
             }
         }
     }
 
     private suspend fun loadJokes(size: Int = 5) {
+        isLoading.emit(true)
         jokesRepo.getJokes(size)
             .onSuccess { joke ->
                 jokes.emit(joke.toMutableList())
+                isLoading.emit(false)
             }.onFailure {
                 uiMessageManager.emitMessage(UiMessage(JokesUiMessage.LoadingFailed))
+                isLoading.emit(false)
             }
     }
 

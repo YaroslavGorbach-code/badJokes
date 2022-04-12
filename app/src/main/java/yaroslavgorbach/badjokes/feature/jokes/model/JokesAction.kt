@@ -4,4 +4,5 @@ import yaroslavgorbach.badjokes.data.local.model.JokeEntity
 
 sealed class JokesAction {
     class RemoveJoke(val joke: JokeEntity) : JokesAction()
+    object LoadJokes : JokesAction()
 }

@@ -1,7 +1,10 @@
 package yaroslavgorbach.badjokes.feature.jokes.ui
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -16,6 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 import yaroslavgorbach.badJokes.common_ui.theme.BadJokesTheme
 import yaroslavgorbach.badJokes.common_ui.theme.Primary
@@ -45,6 +51,7 @@ internal fun JokesUi(
     )
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun JokesUi(
     state: JokesViewState,
@@ -70,50 +77,68 @@ internal fun JokesUi(
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxSize(),
-    ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(Primary)
+    ) { _ ->
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(state.isLoading),
+            onRefresh = { actioner(JokesAction.LoadJokes) },
+            indicator = { refreshState, trigger ->
+                SwipeRefreshIndicator(
+                    state = refreshState,
+                    refreshTriggerDistance = trigger,
+                    scale = true,
+                    backgroundColor = MaterialTheme.colors.primary,
+                    shape = MaterialTheme.shapes.small,
+                )
+            }
         ) {
-            Swiper(
-                items = state.jokes,
-                onItemRemoved = { item, dir ->
-                    actioner(JokesAction.RemoveJoke(item))
-                },
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = 24.dp, vertical = 100.dp)
-            ) { joke ->
-                Box(modifier = Modifier.fillMaxSize()) {
-                    if (joke.type == JokeType.SINGLE) {
-                        Text(
-                            style = MaterialTheme.typography.caption,
-                            text = joke.joke.toString(),
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .padding(16.dp)
-                        )
-                    }
 
-                    if (joke.type == JokeType.TWOPART) {
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .padding(16.dp)
-                        ) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(Primary)
+                    .verticalScroll(ScrollState(0))
+            ) {
+                Swiper(
+                    items = state.jokes,
+                    onItemRemoved = { item, dir ->
+                        actioner(JokesAction.RemoveJoke(item))
+                    },
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxWidth()
+                        .height(500.dp)
+                        .padding(horizontal = 24.dp)
+                ) { joke ->
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        if (joke.type == JokeType.SINGLE) {
                             Text(
                                 style = MaterialTheme.typography.caption,
-                                text = joke.setup.toString(),
+                                text = joke.joke.toString(),
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(16.dp)
                             )
+                        }
 
-                            Spacer(modifier = Modifier.height(24.dp))
+                        if (joke.type == JokeType.TWOPART) {
+                            Column(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(16.dp)
+                            ) {
+                                Text(
+                                    style = MaterialTheme.typography.caption,
+                                    text = joke.setup.toString(),
+                                )
 
-                            Text(
-                                fontSize = 18.sp,
-                                style = MaterialTheme.typography.caption,
-                                text = joke.delivery.toString(),
-                            )
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                Text(
+                                    fontSize = 18.sp,
+                                    style = MaterialTheme.typography.caption,
+                                    text = joke.delivery.toString(),
+                                )
+                            }
                         }
                     }
                 }
