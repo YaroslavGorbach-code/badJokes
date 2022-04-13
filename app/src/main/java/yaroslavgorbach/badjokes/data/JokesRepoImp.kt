@@ -11,10 +11,12 @@ class JokesRepoImp @Inject constructor(private val jokesApi: JokesService) : Jok
 
     private var cashedJokes: MutableList<JokeEntity> = ArrayList()
 
-    override suspend fun getJokes(size: Int): Result<List<JokeEntity>> {
+    override suspend fun getJokes(size: Int, category: String): Result<List<JokeEntity>> {
         if (cashedJokes.size <= 5) {
             try {
-                cashedJokes.addAll(jokesApi.jokes().jokes?.map(::JokeEntity) ?: emptyList())
+                cashedJokes.addAll(
+                    jokesApi.jokes(category = category).jokes?.map(::JokeEntity) ?: emptyList()
+                )
             } catch (e: IOException) {
                 return Result.failure(Throwable())
             }

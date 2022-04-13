@@ -1,6 +1,7 @@
 package yaroslavgorbach.badjokes
 
 import androidx.compose.foundation.text.InternalFoundationTextApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -23,6 +24,7 @@ private sealed class LeafScreen(
     object Jokes : LeafScreen("Jokes")
 }
 
+@ExperimentalMaterialApi
 @InternalFoundationTextApi
 @Composable
 internal fun AppNavigation(
@@ -38,6 +40,7 @@ internal fun AppNavigation(
     }
 }
 
+@ExperimentalMaterialApi
 @InternalFoundationTextApi
 private fun NavGraphBuilder.addJokesTopLevel(
     navController: NavController,
@@ -50,6 +53,7 @@ private fun NavGraphBuilder.addJokesTopLevel(
     }
 }
 
+@ExperimentalMaterialApi
 @InternalFoundationTextApi
 private fun NavGraphBuilder.addJokes(
     navController: NavController,

@@ -28,12 +28,16 @@ class JokesViewModel @Inject constructor(
 
     private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
+    private val chips: MutableStateFlow<List<JokesViewState.Chip>> =
+        MutableStateFlow(JokesViewState.Chip.Chips)
+
     val state: StateFlow<JokesViewState> = combine(
         jokes,
         isLoading,
-        uiMessageManager.message
-    ) { jokes, isLoading, message ->
-        JokesViewState(jokes = jokes, isLoading = isLoading, message = message)
+        uiMessageManager.message,
+        chips
+    ) { jokes, isLoading, message, chips ->
+        JokesViewState(jokes = jokes, isLoading = isLoading, message = message, chips = chips)
     }.stateIn(
         scope = viewModelScope,
         started = WhileSubscribed(5000),
@@ -61,14 +65,29 @@ class JokesViewModel @Inject constructor(
                     is JokesAction.LoadJokes -> {
                         loadJokes(5)
                     }
+                    is JokesAction.ChipChosen -> {
+                        chips.update {
+                            it.map { chip ->
+                                if (chip.chipType == action.chip.chipType) {
+                                    chip.copy(isChosen = true)
+                                } else {
+                                    chip.copy(isChosen = false)
+                                }
+                            }
+                        }
+                        loadJokes(category = action.chip.chipType.title)
+                    }
                 }
             }
         }
     }
 
-    private suspend fun loadJokes(size: Int = 5) {
+    private suspend fun loadJokes(
+        size: Int = 5,
+        category: String = JokesViewState.Chip.ChipType.ANY.title
+    ) {
         isLoading.emit(true)
-        jokesRepo.getJokes(size)
+        jokesRepo.getJokes(size, category)
             .onSuccess { joke ->
                 jokes.emit(joke.toMutableList())
                 isLoading.emit(false)
