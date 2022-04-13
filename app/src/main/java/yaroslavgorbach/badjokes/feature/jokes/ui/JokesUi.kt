@@ -3,12 +3,13 @@ package yaroslavgorbach.badjokes.feature.jokes.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,6 +26,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
 import yaroslavgorbach.badJokes.common_ui.theme.BadJokesTheme
 import yaroslavgorbach.badJokes.common_ui.theme.Primary
+import yaroslavgorbach.badJokes.common_ui.theme.SecondaryText
 import yaroslavgorbach.badJokes.common_ui.ui.swipeCard.Swiper
 import yaroslavgorbach.badjokes.data.remote.model.JokeType
 import yaroslavgorbach.badjokes.feature.jokes.model.JokesAction
@@ -114,6 +116,7 @@ internal fun JokesUi(
                             Text(
                                 style = MaterialTheme.typography.caption,
                                 text = joke.joke.toString(),
+                                fontSize = 20.sp,
                                 modifier = Modifier
                                     .align(Alignment.Center)
                                     .padding(16.dp)
@@ -139,6 +142,29 @@ internal fun JokesUi(
                                     text = joke.delivery.toString(),
                                 )
                             }
+                        }
+
+                        Row(
+                            Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 18.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Share,
+                                contentDescription = null,
+                                tint = SecondaryText,
+                                modifier = Modifier.clickable {
+
+                                })
+
+                            Spacer(modifier = Modifier.size(40.dp))
+
+                            Icon(
+                                Icons.Default.Favorite,
+                                contentDescription = null,
+                                tint = SecondaryText
+                            )
+
                         }
                     }
                 }
