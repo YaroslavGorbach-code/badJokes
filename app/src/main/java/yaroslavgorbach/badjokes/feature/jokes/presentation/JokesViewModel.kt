@@ -77,6 +77,9 @@ class JokesViewModel @Inject constructor(
                         }
                         loadJokes(category = action.chip.chipType.title)
                     }
+                    JokesAction.ShareJoke -> {
+                        uiMessageManager.emitMessage(UiMessage(JokesUiMessage.ShareJoke(jokes.value.first())))
+                    }
                 }
             }
         }
